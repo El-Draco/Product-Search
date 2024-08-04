@@ -7,7 +7,7 @@ params = {
   "location":"Dubai,Dubai,United Arab Emirates",
   "gl":"ae",
   "cr":"countryAE",
-  "api_key": "e7788240cff1f94267a8e201cf4857080e4a039fb499f4df1005f067a9e35c5b",
+  "api_key": "",
   "num":"1"
 }
 
