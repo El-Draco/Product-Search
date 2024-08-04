@@ -1,0 +1,7 @@
+serpapi
+requests
+google-search-results
+flask
+pdfkit
+wkhtmltopdf
+Flask-Session
