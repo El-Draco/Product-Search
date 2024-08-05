@@ -70,12 +70,12 @@ This Flask application allows users to perform a search using the SerpAPI, displ
 
 1. Run the Flask application:
     ```bash
-    python3 app.py
+    python app.py
     ```
 
 2. Open your browser and go to `http://127.0.0.1:5000`.
 
-3. Enter a search query and submit the form.
+3. Enter a search query and submit the form OR upload an image.
 
 4. View the search results displayed in a table.
 
@@ -88,3 +88,4 @@ This Flask application allows users to perform a search using the SerpAPI, displ
 - `templates/results.html`: HTML template for displaying search results.
 - `templates/pdf.html`: HTML template for generating the PDF.
 - `requirements.txt`: List of required Python packages.
+- `.env`: SERP API Key & Flask app secret
