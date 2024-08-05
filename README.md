@@ -48,26 +48,29 @@ This Flask application allows users to perform a search using the SerpAPI, displ
       ```
     - **Windows**:
       Download the installer from the [official site](https://wkhtmltopdf.org/downloads.html) and follow the instructions.
-
+5. Create a .env file
+    ```bash
+    touch .env
+    ```
 ## Configuration
 
 1. Set up your SerpAPI key:
     - Sign up on [SerpAPI](https://serpapi.com/) to get your API key.
-    - Replace the placeholder API key in `app.py` with your actual API key:
+    - Replace the placeholder API key in `.env` with your actual API key:
       ```python
-      "api_key": "your_serpapi_key"
+      "SERP_API_KEY": "your_serpapi_key"
       ```
 
-2. Configure Flask-Session in `app.py`:
+2. Configure Flask-Session in `.env`:
     ```python
-    app.config["SECRET_KEY"] = 'your_secret_key'
+    "SECRET_KEY" = 'your_secret_key'
     ```
 
 ## Usage
 
 1. Run the Flask application:
     ```bash
-    python app.py
+    python3 app.py
     ```
 
 2. Open your browser and go to `http://127.0.0.1:5000`.

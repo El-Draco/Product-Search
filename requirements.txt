@@ -6,3 +6,4 @@ pdfkit
 wkhtmltopdf
 Flask-Session
 matplotlib
+opencv-python

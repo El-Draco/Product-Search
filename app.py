@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session, jsonify
+from flask import Flask, render_template, request, redirect, url_for, make_response, session
 from flask_session import Session
 import serpapi
 import pdfkit
@@ -8,28 +8,47 @@ from requests.auth import HTTPBasicAuth
 import os
 from werkzeug.utils import secure_filename
 import base64
-import matplotlib.pyplot as plt
+import cv2
+import base64
+
+
+# Get credentials from environment variables
+SERP_API_KEY = os.getenv('SERP_API_KEY')
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'radi aman riyas'
+app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+"""
+@TODO
+1. add cart
+2. add quantity
+3. navigation
+4. select/deselect specific items
+5. improve ui
+6. package to docker
+
+"""
+
 def get_description(img_filename):
-    img = plt.imread(os.path.join('uploads', img_filename))
-    encoded_img = base64.b64encode(img).decode('utf-8')
-    print(encoded_img)
+    img = cv2.imread(os.path.join('uploads', img_filename))
+    jpg_img = cv2.imencode('.jpg', img)
+    b64_string = base64.b64encode(jpg_img[1]).decode('utf-8')
     payload = {
-        "model": "llava3:34b",
-        "prompt": "Provide a clear keyword description of the main product in this image to be used for a web search to find similar products.",
-        "images": f"[{encoded_img}]"
+        "model": "llava:34b",
+        "prompt": "You're an interior design specialist. You're provided an image of an interior design item and you're required to describe it using clear keywords that include the item type, shape, color shade,\
+              material, etc... Your output should be sufficient to find the exact item when performing google shopping search. OUTPUT ONLY KEYWORDS. ",
+        "images": [f"{b64_string}"],
+        "stream": False
     }
     response = requests.post(
         url="http://localhost:8000/api/generate",
         auth=HTTPBasicAuth("radi","radi"),
         data=json.dumps(payload)
     )
-    return response.json().get("description", "")
+    print(response.content)
+    return response.json()["response"]
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -59,7 +78,7 @@ def results():
         "location": "Dubai,Dubai,United Arab Emirates",
         "gl": "ae",
         "cr": "countryAE",
-        "api_key": "e7788240cff1f94267a8e201cf4857080e4a039fb499f4df1005f067a9e35c5b",
+        "api_key": SERP_API_KEY,
         "num": "10"
     }
 
