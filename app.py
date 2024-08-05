@@ -1,19 +1,52 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session
+from flask import Flask, render_template, request, redirect, url_for, make_response, session, jsonify
 from flask_session import Session
 import serpapi
 import pdfkit
+import requests
+import json
+from requests.auth import HTTPBasicAuth
+import os
+from werkzeug.utils import secure_filename
+import base64
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'radi aman riyas'
-app.config["SESSION_TYPE"] = "filesystem"  # You can also use other types like "redis", "mongodb", etc.
+app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+def get_description(img_filename):
+    img = plt.imread(os.path.join('uploads', img_filename))
+    encoded_img = base64.b64encode(img).decode('utf-8')
+    print(encoded_img)
+    payload = {
+        "model": "llava3:34b",
+        "prompt": "Provide a clear keyword description of the main product in this image to be used for a web search to find similar products.",
+        "images": f"[{encoded_img}]"
+    }
+    response = requests.post(
+        url="http://localhost:8000/api/generate",
+        auth=HTTPBasicAuth("radi","radi"),
+        data=json.dumps(payload)
+    )
+    return response.json().get("description", "")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        query = request.form['query']
-        return redirect(url_for('results', query=query))
-    return render_template('index.html')
+        if request.form['query']:
+            query = request.form['query']
+            print(query)
+            if query:
+                return redirect(url_for('results', query=query))
+        if 'file' in request.files:
+            file = request.files['file']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                file.save(os.path.join('uploads', filename))
+                description = get_description(filename)
+                return render_template('index.html', description=description)
+    return render_template('index.html', description="")
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():

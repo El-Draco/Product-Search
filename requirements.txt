@@ -5,3 +5,4 @@ flask
 pdfkit
 wkhtmltopdf
 Flask-Session
+matplotlib
