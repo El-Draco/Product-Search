@@ -58,12 +58,17 @@ This Flask application allows users to perform a search using the SerpAPI, displ
     - Sign up on [SerpAPI](https://serpapi.com/) to get your API key.
     - Replace the placeholder API key in `.env` with your actual API key:
       ```python
-      "SERP_API_KEY": "your_serpapi_key"
+      SERP_API_KEY = "your_serpapi_key"
       ```
 
 2. Configure Flask-Session in `.env`:
     ```python
-    "SECRET_KEY" = 'your_secret_key'
+    SECRET_KEY = 'your_secret_key'
+    ```
+3. Enter credentials for the LLM service
+    ```bash
+    LLM_USERNAME = "your_username"
+    LLM_PASSWORD = "your_password"
     ```
 
 ## Usage

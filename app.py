@@ -10,10 +10,14 @@ from werkzeug.utils import secure_filename
 import base64
 import cv2
 import base64
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Get credentials from environment variables
 SERP_API_KEY = os.getenv('SERP_API_KEY')
+LLM_USERNAME = os.getenv('LLM_USERNAME')
+LLM_PASSWORD = os.getenv('LLM_PASSWORD')
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
@@ -44,7 +48,7 @@ def get_description(img_filename):
     }
     response = requests.post(
         url="http://localhost:8000/api/generate",
-        auth=HTTPBasicAuth("radi","radi"),
+        auth=HTTPBasicAuth(LLM_USERNAME,LLM_PASSWORD),
         data=json.dumps(payload)
     )
     print(response.content)
@@ -78,7 +82,7 @@ def results():
         "location": "Dubai,Dubai,United Arab Emirates",
         "gl": "ae",
         "cr": "countryAE",
-        "api_key": SERP_API_KEY,
+        "api_key": f"{SERP_API_KEY}",
         "num": "10"
     }
 

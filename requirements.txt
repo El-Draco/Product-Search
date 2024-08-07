@@ -7,3 +7,4 @@ wkhtmltopdf
 Flask-Session
 matplotlib
 opencv-python
+python-dotenv
