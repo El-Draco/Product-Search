@@ -48,7 +48,7 @@ def get_description(img_filename):
     }
     response = requests.post(
         url="http://localhost:8000/api/generate",
-        auth=HTTPBasicAuth(LLM_USERNAME,LLM_PASSWORD),
+        auth=HTTPBasicAuth(f"{LLM_USERNAME}",f"{LLM_PASSWORD}"),
         data=json.dumps(payload)
     )
     print(response.content)
